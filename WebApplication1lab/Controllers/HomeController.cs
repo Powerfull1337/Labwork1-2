@@ -18,28 +18,19 @@ namespace WebApplication1lab.Controllers
 		{
 			var courses = from mov in _context.Movies
 						  select mov;
-
 			return View(await courses.ToListAsync());
 		}
 
 		public async Task<IActionResult> Buy(int id)
 		{
-			var phone = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
-			return View(phone);
+			var movie = await _context.Movies.FirstOrDefaultAsync(x => x.Id == id);
+			return View(movie);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Buy(string person, string address, Movie phone)
+		public async Task<IActionResult>  Buy(string person, string address)
 		{
-			Purchase purchase = new Purchase()
-			{
-				Person = person,
-				Address = address,
-				PhoneId = phone.Id,
-				Date = DateTime.UtcNow
-			};
-			_context.Purchases.AddAsync(purchase);
-			_context.SaveChangesAsync();
+
 			return RedirectToAction("Confirm", new { person, address });
 		}
 
